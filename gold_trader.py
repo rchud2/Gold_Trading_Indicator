@@ -238,18 +238,13 @@ def format_summary_message(df: pd.DataFrame, signal: dict, recent_signals: list)
     return "\n".join(message_lines)
 
 
-def send_telegram(message: str):
-    #send to telegram
-    bot_token = "8754347250:AAEgj_J1cTJEu33jGEo6R1pnNW02IEWP8Iw", 
-    chat_id = ["8556263114"]
-    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    for i in range(0, len(chat_id)):
-        payload = {"chat_id": chat_id, "text": message}
-        response = requests.post(url, data=payload, timeout=10)
-        if response.status_code == 200:
-            print(f"Telegram message sent to {chat_id}")
-        else:
-            print(f"Failed to send to {chat_id}: {response.status_code}")
+from config import BOT_TOKEN, CHAT_ID
+
+def send_telegram(message):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    for chat in CHAT_ID:
+        payload = {"chat_id": chat, "text": message}
+        requests.post(url, data=payload)
 
 
 def print_signal(signal: dict, recent_signals: list = None):
